@@ -32,12 +32,39 @@ class TutoManager extends Manager
 
     public function findAll()
     {
-
         // Connexion à la BDD
         $dbh = static::connectDb();
 
         // Requête
         $sth = $dbh->prepare('SELECT * FROM tutos');
+        $sth->execute();
+
+        $tutos = [];
+
+        while($row = $sth->fetch(\PDO::FETCH_ASSOC)){
+
+            $tuto = new Tuto();
+            $tuto->setId($row['id']);
+            $tuto->setTitle($row['title']);
+            $tuto->setDescription($row['description']);
+            $tuto->setCreatedAt($row["createdAt"]);
+            $tutos[] = $tuto;
+
+        }
+
+        return $tutos;
+
+    }
+
+    public function findPerPage($page)
+    {
+        // Connexion à la BDD
+        $dbh = static::connectDb();
+
+        $perPage = 5;
+        $offset = ($page * $perPage) - $perPage;
+        // Requête
+        $sth = $dbh->prepare('SELECT * FROM tutos' . 'OFFSET ' . $offset . ' LIMIT 5');
         $sth->execute();
 
         $tutos = [];
@@ -81,7 +108,36 @@ class TutoManager extends Manager
 
     public function update(Tuto $tuto){
 
-       // Modification d'un tuto en BDD
+      // Connexion à la BDD
+      $dbh = static::connectDb();
+      $id = $tuto->getId();
+      $title = $tuto->getTitle();
+      $description = $tuto->getDescription();
+      $createdAt = $tuto->getCreatedAt();
+      // Requête
+      $sth = $dbh->prepare('UPDATE tutos SET title = :title, description = :description, createdAt = :createdAt WHERE id = :id');
+      $sth->bindParam(':id', $id, \PDO::PARAM_INT);
+      $sth->bindParam(':title', $title);
+      $sth->bindParam(':description', $description);
+      $sth->bindParam(':createdAt', $createdAt);
+      $sth->execute();
+
+      // Retour
+      return $tuto;
+
+    }
+
+    public function delete($id)
+    {
+
+        // Connexion à la BDD
+        $dbh = static::connectDb();
+
+        // Requête
+        $sth = $dbh->prepare('delete FROM tutos WHERE id = :id');
+        $sth->bindParam(':id', $id, \PDO::PARAM_INT);
+        $sth->execute();
+
 
     }
 
