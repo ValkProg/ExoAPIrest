@@ -23,6 +23,7 @@ switch(true) {
 
     case preg_match('#^tutos((?)|$)#', $uri) && $method == 'GET':
 
+<<<<<<< HEAD
         if (isset($_GET["page"]) && $_GET["page"] > 0){
             $page = $_GET["page"];
             $controller=new tutoController();
@@ -32,6 +33,26 @@ switch(true) {
             $controller = new tutoController();
             return $controller->index();
         }
+=======
+        $controller = new tutoController();
+        $currentPage = $matches[1];
+        
+        // if(isset($_GET['page']) && !empty($_GET['page'])){
+        //     $currentPage = (int) strip_tags($_GET['page']);
+        // }else{
+        //     $currentPage = 1;
+        // }
+
+        return $controller->page($currentPage);
+
+        break;
+
+    case preg_match('#^tutos((\?)|$)#', $uri) && $method == 'GET':
+
+        $controller = new tutoController();
+
+        return $controller->index();
+>>>>>>> 7231b4266b9786055da2abd295d53aff3db5f9b0
 
         break;
 
