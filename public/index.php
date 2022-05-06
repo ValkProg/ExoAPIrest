@@ -32,7 +32,7 @@ switch(true) {
         //     $currentPage = 1;
         // }
 
-        return $controller->index();
+        return $controller->page($currentPage);
 
         break;
 
