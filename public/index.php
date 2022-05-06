@@ -21,26 +21,17 @@ switch(true) {
 
         break;
 
-    case preg_match('#^tutos/pages/(\d+)$#', $uri, $matches) && $method == 'GET':
+    case preg_match('#^tutos((?)|$)#', $uri) && $method == 'GET':
 
-        $controller = new tutoController();
-        $currentPage = $matches[1];
-        
-        // if(isset($_GET['page']) && !empty($_GET['page'])){
-        //     $currentPage = (int) strip_tags($_GET['page']);
-        // }else{
-        //     $currentPage = 1;
-        // }
-
-        return $controller->index();
-
-        break;
-
-    case preg_match('#^tutos((\?)|$)#', $uri) && $method == 'GET':
-
-        $controller = new tutoController();
-
-        return $controller->index();
+        if (isset($_GET["page"]) && $_GET["page"] > 0){
+            $page = $_GET["page"];
+            $controller=new tutoController();
+            return $controller->page($page);
+        }
+        else{
+            $controller = new tutoController();
+            return $controller->index();
+        }
 
         break;
 

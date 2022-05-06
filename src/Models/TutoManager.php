@@ -63,8 +63,9 @@ class TutoManager extends Manager
 
         $perPage = 5;
         $offset = ($page * $perPage) - $perPage;
+        var_dump($offset);
         // Requête
-        $sth = $dbh->prepare('SELECT * FROM tutos' . 'OFFSET ' . $offset . ' LIMIT 5');
+        $sth = $dbh->prepare('SELECT * FROM tutos LIMIT 5 OFFSET ' .$offset);
         $sth->execute();
 
         $tutos = [];
@@ -79,6 +80,7 @@ class TutoManager extends Manager
             $tutos[] = $tuto;
 
         }
+        var_dump($tutos);
 
         return $tutos;
 
